@@ -122,7 +122,7 @@ const UnverifiedUsers = () => {
                     src={
                       user.idCard.startsWith("http")
                         ? user.idCard
-                        : `http://172.16.220.105:8000${user.idCard}`
+                        : `http://localhost:5000${user.idCard}`
                     }
                     alt={user.idCard}
                   />
