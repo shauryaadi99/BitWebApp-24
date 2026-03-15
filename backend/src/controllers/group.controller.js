@@ -138,7 +138,7 @@ const acceptReq = asyncHandler(async (req, res) => {
   user.group = group._id;
   user.groupReq = [];
   await user.save();
-  await group.save();
+  await group.save({ validateBeforeSave: false });
   return res.status(200).json(new ApiResponse(200, "Joined successfully"));
 });
 
@@ -177,11 +177,11 @@ const removeMember = asyncHandler(async (req, res) => {
   }
   group.members.pull(user?._id);
   user.group = null;
-  await group.save();
+  await group.save({ validateBeforeSave: false });
   if (group?.leader.equals(user?._id)) {
     if (group.members.length > 0) {
       group.leader = group.members[0];
-      await group.save();
+      await group.save({ validateBeforeSave: false });
     } else {
       await group.deleteOne();
     }
@@ -315,7 +315,7 @@ const applyToFaculty = asyncHandler(async (req, res) => {
     await faculty.save();
   }
 
-  await group.save();
+  await group.save({ validateBeforeSave: false });
 
   return res
     .status(200)
@@ -390,7 +390,7 @@ const addDiscussion = asyncHandler(async (req, res) => {
     throw new ApiError(409, "Only Leader can add discussion");
   }
   group.discussion.push({ description });
-  await group.save();
+  await group.save({ validateBeforeSave: false });
   return res
     .status(200)
     .json(new ApiResponse(200, group, "Discussion added successfully"));
@@ -418,7 +418,7 @@ const addRemarkAbsent = asyncHandler(async (req, res) => {
     date: new Date(),
   });
 
-  await group.save();
+  await group.save({ validateBeforeSave: false });
 
   return res
     .status(200)

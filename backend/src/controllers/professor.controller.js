@@ -39,7 +39,7 @@ const saveSummerProjectTitle = asyncHandler(async (req, res) => {
   // ✅ Allow empty → store as null
   group.projectTitle = projectTitle?.trim() || null;
 
-  await group.save();
+  await group.save({ validateBeforeSave: false });
 
   return res.status(200).json(
     new ApiResponse(
@@ -666,7 +666,7 @@ const denyGroup = asyncHandler(async (req, res) => {
   prof.appliedGroups.summer_training.pull(_id);
   group.deniedProf.push(profId);
   group.preferenceLastMovedAt = Date.now();
-  await group.save();
+  await group.save({ validateBeforeSave: false });
   await prof.save();
   if (group.summerAppliedProfs.length > 0) {
     const profToApply = group.summerAppliedProfs[0];
